@@ -1,0 +1,46 @@
+package Week2Assignments;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class CreateContacts {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver =new ChromeDriver();
+		driver.get("http://leaftaps.com/opentaps/control/login");
+		driver.manage().window().maximize();
+		driver.findElement(By.id("username")).sendKeys("DemoCSR");
+		driver.findElement(By.id("password")).sendKeys("crmsfa");
+		driver.findElement(By.className("decorativeSubmit")).click();
+		driver.findElement(By.linkText("CRM/SFA")).click();
+		driver.findElement(By.linkText("Contacts")).click();		
+		driver.findElement(By.xpath("//a[text()='Create Contact']")).click();
+		driver.findElement(By.id("firstNameField")).sendKeys("Sunny");
+		driver.findElement(By.id("lastNameField")).sendKeys("D");
+		driver.findElement(By.name("firstNameLocal")).sendKeys("Sun");
+		driver.findElement(By.name("lastNameLocal")).sendKeys("D");
+		driver.findElement(By.id("createContactForm_departmentName")).sendKeys("Finance");
+		driver.findElement((By.xpath("//span[text()='Description']/following::textarea[@name='description']"))).sendKeys("Creating Contact of Kumar");
+		driver.findElement(By.id("createContactForm_primaryEmail")).sendKeys("sunny@gmail.com");
+		WebElement state = driver.findElement(By.xpath("//select[contains (@id,'createContactForm_generalStateProvinceGeoId')]"));
+		Select State = new Select(state);
+		State.selectByVisibleText("Arizona");
+		driver.findElement(By.name("submitButton")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//a[text()='Edit']")).click();
+		WebElement desc = driver.findElement((By.xpath("//span[text()='Description']/following::textarea[@name='description']")));
+		//String attribute = desc.getAttribute("value");
+		desc.clear();
+		driver.findElement(By.xpath("//span[text()='Important Note']/following::textarea")).sendKeys("updated Sunny's contact");
+		driver.findElement(By.xpath("//input[@value='Update']")).click();
+		Thread.sleep(2000);
+		driver.getTitle();		
+	}
+
+}
