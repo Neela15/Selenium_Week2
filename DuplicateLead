@@ -1,0 +1,58 @@
+package Week2Assignments;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class DuplicateLead {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver = new ChromeDriver();
+		driver.get("http://leaftaps.com/opentaps/control/login");
+		driver.manage().window().maximize();
+		driver.findElement(By.id("username")).sendKeys("DemoCSR");
+		driver.findElement(By.id("password")).sendKeys("crmsfa");
+		driver.findElement(By.className("decorativeSubmit")).click();
+		driver.findElement(By.linkText("CRM/SFA")).click();
+		driver.findElement(By.xpath("//a[text()='Leads']")).click();
+		driver.findElement(By.xpath("//a[text()='Find Leads']")).click();
+		driver.findElement(By.xpath("//span[text()='Email']")).click();
+		driver.findElement(By.xpath("//input[@name='emailAddress']")).sendKeys("A@gmail.com");
+		driver.findElement(By.xpath("//td[@class='x-btn-center']//button[text()='Find Leads']")).click();
+		Thread.sleep(3000);
+		WebElement FirstLead = driver.findElement(By.xpath("(//div[@class='x-grid3-cell-inner x-grid3-col-partyId']/a)"));
+		String firstlead=FirstLead.getText();
+		System.out.println(firstlead);
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("(//div[@class='x-grid3-cell-inner x-grid3-col-partyId']/a)")).click();
+		String FirstName = driver.findElement(By.id("viewLead_firstName_sp")).getText();
+		String LastName = driver.findElement(By.id("viewLead_lastName_sp")).getText();
+		System.out.println("FirstName" +FirstName);
+		System.out.println("LastName" +LastName);
+		driver.findElement(By.xpath("//a[text()='Duplicate Lead']")).click();
+		String Title = driver.getTitle();
+		System.out.println(Title);
+		driver.findElement(By.xpath("//input[@name='submitButton']")).click();
+		String Title1 = driver.getTitle();
+		System.out.println(Title1);
+		String DFirstName = driver.findElement(By.id("viewLead_firstName_sp")).getText();
+		String DLastName = driver.findElement(By.id("viewLead_lastName_sp")).getText();
+		System.out.println("FirstName" +DFirstName);
+		System.out.println("LastName" +DLastName);
+		/*if (FirstName == DFirstName) // Two Strings cannot be compared. All that does is test to see if the two objects have the same address in memory/are the same instance.
+		{
+			System.out.println("The Lead is duplicated successfully");
+		}
+		else
+			System.out.println("Lead is not duplicated");*/
+		Assert.assertEquals(FirstName, DFirstName);
+		System.out.println("The Lead is duplicated successfully");
+		driver.close();		
+	}
+
+}
